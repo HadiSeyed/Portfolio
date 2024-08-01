@@ -45,4 +45,24 @@ Code and additional examples can be found in the folder "Computer Graphics"
 
 ## Computer Vision
 
-In DSCI 6050, Digital Image Analysis and Understanding, I did some works like Vectorization, Image Processing, Image Transformations, Image Warping, Image Stitcher, Image Classification, and Exploration of Modern Computer Vision. Here are some example outputs from my project are shown below.
+In DSCI 6050, Digital Image Analysis and Understanding, I did some works like Vectorization in Numpy, Image Processing, Image Transformations, Image Warping, Image Stitcher, Image Classification, and Exploration of Modern Computer Vision. Here are some example outputs from my project are shown below.
+
+### Figure 1: Vectorization in Numpy
+#### Figure 1.1: Brightness Adjust
+#### Figure 1.2: Contrast Adjustment
+#### Figure 1.3: Thresholding
+#### Figure 1.4: Cropping
+#### Figure 1.5: Scaling
+
+
+### Figure 2: Image Processing
+
+### Figure 3: Image Transformations
+
+### Figure 4: Image Warping
+
+### Figure 5: Image Stitcher
+
+### Figure 6: Image Classification
+
+### Figure 7: Exploration of Modern Computer Vision
