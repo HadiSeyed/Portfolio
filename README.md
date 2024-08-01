@@ -2,7 +2,7 @@
 
 ## Style Transfer Research
 
-I work with Dr. Hart ("http://davidhartcv.com"), assistant professor of computer science at East Carolina University, in the field of Computer Vision research. My thesis topic investigates different approaches to style transfer. Specifically, how different style transfer techniques are affected by different mask sizes, image statistics, etc. Here are some example outputs from my research are shown below. 
+I work with [Dr. Hart]("http://davidhartcv.com"), assistant professor of computer science at East Carolina University, in the field of Computer Vision research. My thesis topic investigates different approaches to style transfer. Specifically, how different style transfer techniques are affected by different mask sizes, image statistics, etc. Here are some example outputs from my research are shown below. 
 
 ### Figure 1: Example output using the Linear Style Transfer algorithm for a full image.
 ![figure 1](<1. Blended.jpg>)
