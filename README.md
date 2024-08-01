@@ -7,14 +7,14 @@ I work with Dr. Hart, assistant professor of computer science at East Carolina U
 ### Example output using the Linear Style Transfer algorithm for a full image.
 ![figure 1](<1. Blended.jpg>)
 
+### Example output using the Linear Style Transfer algorithm for a full image, followed by masking.
+![figure 2](<2. Blended.jpg>)
 
-![figure 2: Example output using the Linear Style Transfer algorithm for a full image, followed by masking.](<2. Blended.jpg>)
+### Example output using a Partial Convolution algorithm for style transfer.
+![figure 3](<4. Blended.jpg>)
 
-
-![figure 3: Example output using a Partial Convolution algorithm for style transfer.](<4. Blended.jpg>)
-
-
-![figure 4: Comparison  of multiple techniques.](<5. Blended.jpg>)
+### Comparison  of multiple techniques.
+![figure 4](<5. Blended.jpg>)
 
 
 Code and additional examples can be found in the folder "Style Transfer Research"
@@ -24,8 +24,8 @@ Code and additional examples can be found in the folder "Style Transfer Research
 
 In CSCI 6820, Computer Graphics, I did Explore and work with advanced  and different concepts in 3D modeling using in Blender.
 
-
-![figure 1: Exploring advanced concepts in 3D modeling using in Blender](<Hadi Seyed - Final Project - CG.png>)
+### Exploring advanced concepts in 3D modeling using in Blender
+![figure 1](<Hadi Seyed - Final Project - CG.png>)
 
 
 More examples of my graphics
