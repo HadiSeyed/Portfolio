@@ -22,7 +22,7 @@ Code and additional examples can be found in the folder "Style Transfer Research
 
 ## Computer Graphics
 
-In CSCI 6820, Computer Graphics, I Explored advanced concepts in 3D modeling using in Blender like camera location, light, rendering etc. Moreover, I worked on 3D projection matrix, ray tracer, and WebGL. 
+In CSCI 6820, Computer Graphics, I Explored advanced concepts in 3D modeling using in Blender like camera location, light, rendering etc. Moreover, I worked on 3D projection matrix, ray tracer, and WebGL. Here are some example outputs from my project are shown below.
 
 ### Figure 1: 3D Modeling
 ![figure 1](<Coffee table.png>)
@@ -45,4 +45,4 @@ Code and additional examples can be found in the folder "Computer Graphics"
 
 ## Computer Vision
 
-In DSCI 6050, Digital Image Analysis and Understanding, I did ...
+In DSCI 6050, Digital Image Analysis and Understanding, I did some works like Vectorization, Image Processing, Image Transformations, Image Warping, Image Stitcher, Image Classification, and Exploration of Modern Computer Vision. Here are some example outputs from my project are shown below.
