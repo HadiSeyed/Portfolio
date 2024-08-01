@@ -37,7 +37,7 @@ In CSCI 6820, Computer Graphics, I Explored advanced concepts in 3D modeling usi
 ![figure 4.1](Scene_1.png) ![figure 4.2](Scene_2.png) ![figure 4.3](Scene_3.png) ![figure 4.4](Scene_4.png) ![figure 4.5](Scene_5.png)
 
 ### Figure 5: Advanced Techniques in WebGL
-![figure 5](Minecraft.jpeg)
+![figure 5](<Minecraft.png>)
 
 
 Code and additional examples can be found in the folder "Computer Graphics"
