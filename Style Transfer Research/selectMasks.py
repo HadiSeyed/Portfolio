@@ -54,7 +54,7 @@ def interactiveSelect(image, jsondata):
                     cv2.imshow("image", display_image[:,:,::-1])
                     break
                     # # Display the whole piceces of masks, comment the break
-                    
+                    g
     cv2.imshow("image", image[:,:,::-1])
     cv2.setMouseCallback("image", click_event)
     cv2.waitKey(0)

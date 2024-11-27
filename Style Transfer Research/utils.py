@@ -10,6 +10,10 @@ import matplotlib.pyplot as plt
 import cv2
 
 
+import torch.nn as nn
+import torch.nn.functional as F
+
+
 def loadImage(filename, asTensor=False):
     '''
     Load an image from a file
@@ -238,3 +242,209 @@ def alphaBlend(image, mask, background):
 
     blended = image * alpha + background * (1 - alpha)
     return blended
+
+
+
+def calcStats(im, mask=None, isTensor = True):
+
+    # Check if tensor
+    if isTensor:
+        im = tensorToImage(im)
+        if mask is not None:
+            mask = tensorToMask(mask)
+
+    # If no mask is provided, calculate stats for the entire image
+    if mask is None:
+        colors = im.reshape(-1, 3)  # Flatten the image into a 2D array of RGB values
+    else:
+        # Row and Column values of mask pixels
+        locs = np.where(mask)
+        #print(len(locs[0]))
+
+        # RGB Values of image pixels in the mask
+        colors = im[locs]
+        #print(colors)
+
+    # Normalize
+    colors = colors/255
+    print("Colors",colors)
+
+    # Calculate standard deviation, and L1 norm for red channel
+    std_red = np.std(colors[:,0])
+    L1_red = np.mean(np.abs(colors[:,0] - np.mean(colors[:,0])))
+    print(std_red,L1_red)
+
+    # Convert to grayscale
+    grayscale = 0.299*colors[:,0] + 0.587*colors[:,1] + 0.114*colors[:,2]
+
+    # Calculate statistics for RGB and grayscale values:
+    mean_red = np.mean(colors[:,0])
+    mean_green = np.mean(colors[:, 1])
+    mean_blue = np.mean(colors[:, 2])
+    print(mean_red,mean_green,mean_blue)
+
+    mean_gray = np.mean(grayscale)
+    print(mean_gray)
+
+    # Calculate variance for each channels
+    var_red = np.mean((colors[:,0] - np.mean(colors[:,0]))**2)
+    var_green = np.mean((colors[:,1] - np.mean(colors[:,1]))**2)
+    var_blue = np.mean((colors[:,2] - np.mean(colors[:,2]))**2)
+    print(var_red,var_green,var_blue)
+
+    var_gray = np.mean((grayscale - np.mean(grayscale))**2)
+    #variance = np.var(grayscale)
+    print(var_gray)
+
+    total_var_RGB = np.sqrt(var_red**2 + var_green**2 + var_blue**2)
+    print(total_var_RGB)
+
+    skewness_gray = np.mean((grayscale - np.mean(grayscale))**3)
+    print(skewness_gray)
+
+    kurtosis_gray = np.mean((grayscale - mean_gray) ** 4) / (np.var(grayscale) ** 2) - 3
+    print(kurtosis_gray)
+
+    # Calculate histograms for each channel
+    hist_red = np.histogram(colors[:, 0], bins=256, range=(0, 1))[0]
+    hist_green = np.histogram(colors[:, 1], bins=256, range=(0, 1))[0]
+    hist_blue = np.histogram(colors[:, 2], bins=256, range=(0, 1))[0]
+    print(hist_red,hist_green,hist_blue)
+
+    hist_gray = np.histogram(grayscale, bins=256, range=(0, 1))[0]
+    print(hist_gray)
+    # hist_gray = np.histogram(grayscale,bins=8)
+    # print(hist_gray)
+
+    # Calculate brightness (mean of grayscale)
+    brightness_gray = mean_gray
+    print(brightness_gray)
+
+    # Calculate contrast (difference between max and min of grayscale)
+    contrast_gray = np.max(grayscale) - np.min(grayscale)
+    print(contrast_gray)
+
+    # # Calculate the entropy of the grayscale image
+    # entropy_gray = exposure.shannon_entropy(grayscale)
+    # print(entropy_gray)
+
+    # Manual calculation of entropy
+    value, counts = np.unique(grayscale, return_counts=True)
+    probabilities = counts / len(grayscale)
+    entropy_gray = -np.sum(probabilities * np.log2(probabilities))
+    print(entropy_gray)
+
+    #from styleloss import calculateStyleLoss
+    #style_loss = calclulateStlyeLoss(...)
+
+    # Save results to a dictionary
+    filedata = {}
+    filedata["num_pixels"] = len(colors)
+    filedata["std_red"] = std_red
+    filedata["L1_red"] = L1_red
+    filedata["mean_red"] = mean_red
+    filedata["mean_green"] = mean_green
+    filedata["mean_blue"] = mean_blue
+    filedata["mean_gray"] = mean_gray
+    filedata["var_red"] = var_red
+    filedata["var_green"] = var_green
+    filedata["var_blue"] = var_blue
+    filedata["var_gray"] = var_gray
+    filedata["total_var_RGB"] = total_var_RGB
+    filedata["skewness_gray"] = skewness_gray
+    filedata["kurtosis_gray"] = kurtosis_gray
+    filedata["hist_red"] = hist_red.tolist()
+    filedata["hist_green"] = hist_green.tolist()
+    filedata["hist_blue"] = hist_blue.tolist()
+    filedata["hist_gray"] = hist_gray.tolist()
+    filedata["brightness_gray"] = brightness_gray
+    filedata["contrast_gray"] = contrast_gray
+    filedata["entropy_gray"] = entropy_gray
+
+    return filedata
+
+    # filedata = {
+    #     "num_pixels": len(colors),
+    #     "mean_red": mean_red,
+    #     "std_red": std_red,
+    #     "L1_red": L1_red,
+    #     "mean_gray": mean_gray,
+    #     "var_red" : var_red,
+    #     "var_green" : var_green,
+    #     "var_blue" : var_blue,
+    #     "var_gray" : var_gray,
+    #     "total_var_RGB" : total_var_RGB,
+    #     "skewness_gray" : skewness_gray,
+    #     "kurtosis_gray" : kurtosis_gray,
+    #     "hist_red" : hist_red[0].tolist(),
+    #     "hist_green" : hist_green[0].tolist(),
+    #     "hist_blue" : hist_blue[0].tolist(),
+    #     "hist_gray" : hist_gray[0].tolist(),
+    #     "brightness_gray" : brightness_gray,
+    #     "contrast_gray" : contrast_gray,
+    #     "entropy_gray" : entropy_gray
+
+    # }
+
+    
+
+def saveStats(filedata, save_fn):
+    import json
+    import numpy as np
+
+    # Function to convert non-serializable objects
+    def convert(o):
+        if isinstance(o, np.ndarray):
+            return o.tolist()
+        if isinstance(o, np.generic):
+            return o.item()  # Convert numpy types to Python types
+        raise TypeError(f"Object of type {o.__class__.__name__} is not JSON serializable")
+
+    # Serialize the filedata using the custom convert function
+    json_object = json.dumps(filedata, indent=4, default=convert)
+
+    # Writing to the specified JSON file
+    with open(save_fn, "w") as outfile:
+        outfile.write(json_object)
+
+    # Print the JSON object
+    print(json_object)
+
+
+
+# def saveStats(filedata, save_fn):
+
+#     # Save results to a JSON file
+#     import json
+#     json_object = json.dumps(filedata, indent=4)
+
+#     # Writing to sample.json
+#     with open(save_fn, "w") as outfile:
+#         outfile.write(json_object)
+
+#     # Print the results
+#     print(json_object)
+
+
+
+# class MyEncoder(nn.Module):
+#     def __init__(self):
+#         super(MyEncoder, self).__init__()
+        
+#         # Define the convolutional layers
+#         self.conv1 = nn.Conv2d(in_channels=3, out_channels=16, kernel_size=3, stride=1, padding=1)
+#         self.conv2 = nn.Conv2d(in_channels=16, out_channels=32, kernel_size=3, stride=1, padding=1)
+#         # Additional layers can be defined similarly
+
+#     def forward(self, x):
+#         # Ensure 'x' is a Tensor (if necessary)
+#         if isinstance(x, np.ndarray):
+#             x = torch.from_numpy(x).float()
+        
+#         # Apply the layers defined in __init__
+#         out = self.conv1(x)
+#         out = F.relu(out)
+#         out = self.conv2(out)
+#         out = F.relu(out)
+        
+#         return out
